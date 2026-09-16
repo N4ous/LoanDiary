@@ -1,3 +1,5 @@
+package com.ajshahariar.loandiary.ui.viewmodel
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajshahariar.loandiary.data.Loan
