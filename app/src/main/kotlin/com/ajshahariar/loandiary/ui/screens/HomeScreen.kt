@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ajshahariar.loandiary.data.Loan
+import com.ajshahariar.loandiary.ui.theme.LocalCustomColors
 import com.ajshahariar.loandiary.ui.viewmodel.LoanViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -167,6 +168,7 @@ fun HomeScreen(
     onNavigateToDetail: (Loan) -> Unit
 ) {
     val loans by viewModel.allLoans.collectAsState()
+    val customColors = LocalCustomColors.current
     
     var searchQuery by remember { mutableStateOf("") }
     var selectedFilterTab by remember { mutableStateOf(0) } // 0 = All, 1 = Pending, 2 = Repaid
@@ -255,24 +257,40 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                colors = CardDefaults.cardColors(containerColor = customColors.card)
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     // Analytics Sub-Tabs Row selector
                     SecondaryScrollableTabRow(
                         selectedTabIndex = selectedAnalyticsTab,
                         containerColor = Color.Transparent,
+                        contentColor = customColors.primary,
                         divider = {},
                         edgePadding = 0.dp,
                         modifier = Modifier.fillMaxWidth().height(36.dp)
                     ) {
-                        Tab(selected = selectedAnalyticsTab == 0, onClick = { selectedAnalyticsTab = 0 }) {
+                        Tab(
+                            selected = selectedAnalyticsTab == 0,
+                            onClick = { selectedAnalyticsTab = 0 },
+                            selectedContentColor = customColors.primary,
+                            unselectedContentColor = customColors.hintText
+                        ) {
                             Text("Overview", fontSize = 13.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 6.dp))
                         }
-                        Tab(selected = selectedAnalyticsTab == 1, onClick = { selectedAnalyticsTab = 1 }) {
+                        Tab(
+                            selected = selectedAnalyticsTab == 1,
+                            onClick = { selectedAnalyticsTab = 1 },
+                            selectedContentColor = customColors.primary,
+                            unselectedContentColor = customColors.hintText
+                        ) {
                             Text("Lent Insights", fontSize = 13.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 6.dp))
                         }
-                        Tab(selected = selectedAnalyticsTab == 2, onClick = { selectedAnalyticsTab = 2 }) {
+                        Tab(
+                            selected = selectedAnalyticsTab == 2,
+                            onClick = { selectedAnalyticsTab = 2 },
+                            selectedContentColor = customColors.primary,
+                            unselectedContentColor = customColors.hintText
+                        ) {
                             Text("Borrowed Insights", fontSize = 13.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(bottom = 6.dp))
                         }
                     }
@@ -285,36 +303,39 @@ fun HomeScreen(
                     ) {
                         // Numeric Labels breakdown column based on selected analytical segment
                         Column(modifier = Modifier.weight(1f)) {
+                            val labelStyle = MaterialTheme.typography.labelMedium.copy(color = customColors.bodyText)
+                            val titleStyle = MaterialTheme.typography.titleSmall.copy(color = customColors.titleText, fontWeight = FontWeight.Bold)
+                            
                             when (selectedAnalyticsTab) {
                                 1 -> {
-                                    Text("Lent Stats (Receivables)", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    Text("Lent Stats (Receivables)", style = titleStyle, fontSize = 12.sp)
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text("Principal USD: $$totalLentUSD", fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                    Text("Received USD: $$settledLentUSD", fontSize = 11.sp, color = Color.Gray)
-                                    Text("Remaining USD: $$pendingLentUSD", fontSize = 11.sp, color = Color(0xFF2E7D32))
+                                    Text("Principal USD: $$totalLentUSD", style = labelStyle, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                    Text("Received USD: $$settledLentUSD", style = labelStyle, fontSize = 11.sp, color = customColors.hintText)
+                                    Text("Remaining USD: $$pendingLentUSD", style = labelStyle, fontSize = 11.sp, color = customColors.primary)
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text("Principal BDT: ৳$totalLentBDT", fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                    Text("Received BDT: ৳$settledLentBDT", fontSize = 11.sp, color = Color.Gray)
-                                    Text("Remaining BDT: ৳$pendingLentBDT", fontSize = 11.sp, color = Color(0xFF2E7D32))
+                                    Text("Principal BDT: ৳$totalLentBDT", style = labelStyle, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                    Text("Received BDT: ৳$settledLentBDT", style = labelStyle, fontSize = 11.sp, color = customColors.hintText)
+                                    Text("Remaining BDT: ৳$pendingLentBDT", style = labelStyle, fontSize = 11.sp, color = customColors.primary)
                                 }
                                 2 -> {
-                                    Text("Borrowed Stats (Payables)", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    Text("Borrowed Stats (Payables)", style = titleStyle, fontSize = 12.sp)
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text("Principal USD: $$totalBorrowedUSD", fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                    Text("Repaid USD: $$settledBorrowedUSD", fontSize = 11.sp, color = Color.Gray)
-                                    Text("Remaining USD: $$pendingBorrowedUSD", fontSize = 11.sp, color = Color(0xFFC62828))
+                                    Text("Principal USD: $$totalBorrowedUSD", style = labelStyle, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                    Text("Repaid USD: $$settledBorrowedUSD", style = labelStyle, fontSize = 11.sp, color = customColors.hintText)
+                                    Text("Remaining USD: $$pendingBorrowedUSD", style = labelStyle, fontSize = 11.sp, color = Color(0xFFC62828))
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text("Principal BDT: ৳$totalBorrowedBDT", fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                                    Text("Repaid BDT: ৳$settledBorrowedBDT", fontSize = 11.sp, color = Color.Gray)
-                                    Text("Remaining BDT: ৳$pendingBorrowedBDT", fontSize = 11.sp, color = Color(0xFFC62828))
+                                    Text("Principal BDT: ৳$totalBorrowedBDT", style = labelStyle, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                                    Text("Repaid BDT: ৳$settledBorrowedBDT", style = labelStyle, fontSize = 11.sp, color = customColors.hintText)
+                                    Text("Remaining BDT: ৳$pendingBorrowedBDT", style = labelStyle, fontSize = 11.sp, color = Color(0xFFC62828))
                                 }
                                 else -> {
-                                    Text("Unified Dashboard Overview", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    Text("Unified Dashboard Overview", style = titleStyle, fontSize = 12.sp)
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text("Net Lent USD: $$pendingLentUSD", fontSize = 11.sp, color = Color(0xFF2E7D32))
-                                    Text("Net Borrowed USD: $$pendingBorrowedUSD", fontSize = 11.sp, color = Color(0xFFC62828))
-                                    Text("Net Lent BDT: ৳$pendingLentBDT", fontSize = 11.sp, color = Color(0xFF2E7D32))
-                                    Text("Net Borrowed BDT: ৳$pendingBorrowedBDT", fontSize = 11.sp, color = Color(0xFFC62828))
+                                    Text("Net Lent USD: $$pendingLentUSD", style = labelStyle, fontSize = 11.sp, color = customColors.primary)
+                                    Text("Net Borrowed USD: $$pendingBorrowedUSD", style = labelStyle, fontSize = 11.sp, color = Color(0xFFC62828))
+                                    Text("Net Lent BDT: ৳$pendingLentBDT", style = labelStyle, fontSize = 11.sp, color = customColors.primary)
+                                    Text("Net Borrowed BDT: ৳$pendingBorrowedBDT", style = labelStyle, fontSize = 11.sp, color = Color(0xFFC62828))
                                 }
                             }
                         }
@@ -329,8 +350,8 @@ fun HomeScreen(
                                         val total = active + settled
                                         if (total > 0) {
                                             val sweepActive = ((active / total) * 360f).toFloat()
-                                            drawArc(Color(0xFF2E7D32), -90f, sweepActive, false, style = Stroke(width = 14f, cap = StrokeCap.Round))
-                                            drawArc(Color.Gray.copy(alpha = 0.4f), -90f + sweepActive, 360f - sweepActive, false, style = Stroke(width = 14f, cap = StrokeCap.Round))
+                                            drawArc(customColors.primary, -90f, sweepActive, false, style = Stroke(width = 14f, cap = StrokeCap.Round))
+                                            drawArc(customColors.hintText.copy(alpha = 0.4f), -90f + sweepActive, 360f - sweepActive, false, style = Stroke(width = 14f, cap = StrokeCap.Round))
                                         }
                                     }
                                     2 -> {
@@ -340,7 +361,7 @@ fun HomeScreen(
                                         if (total > 0) {
                                             val sweepActive = ((active / total) * 360f).toFloat()
                                             drawArc(Color(0xFFC62828), -90f, sweepActive, false, style = Stroke(width = 14f, cap = StrokeCap.Round))
-                                            drawArc(Color.Gray.copy(alpha = 0.4f), -90f + sweepActive, 360f - sweepActive, false, style = Stroke(width = 14f, cap = StrokeCap.Round))
+                                            drawArc(customColors.hintText.copy(alpha = 0.4f), -90f + sweepActive, 360f - sweepActive, false, style = Stroke(width = 14f, cap = StrokeCap.Round))
                                         }
                                     }
                                     else -> {
@@ -349,7 +370,7 @@ fun HomeScreen(
                                         val totalVolume = sumLent + sumBorrowed
                                         if (totalVolume > 0) {
                                             val sweepLent = ((sumLent / totalVolume) * 360f).toFloat()
-                                            drawArc(Color(0xFF2E7D32), -90f, sweepLent, false, style = Stroke(width = 14f, cap = StrokeCap.Round))
+                                            drawArc(customColors.primary, -90f, sweepLent, false, style = Stroke(width = 14f, cap = StrokeCap.Round))
                                             drawArc(Color(0xFFC62828), -90f + sweepLent, 360f - sweepLent, false, style = Stroke(width = 14f, cap = StrokeCap.Round))
                                         }
                                     }

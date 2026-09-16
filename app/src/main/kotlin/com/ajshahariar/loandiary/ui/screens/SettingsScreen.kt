@@ -1,6 +1,7 @@
 package com.ajshahariar.loandiary.ui.screens
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import com.ajshahariar.loandiary.ui.theme.CustomThemePalette
 import com.ajshahariar.loandiary.ui.theme.LoanDiaryPresetThemes
 import com.ajshahariar.loandiary.ui.viewmodel.LoanViewModel
-import kotlin.concurrent.thread
 
 val IconArrowBackSettings: ImageVector
     get() = ImageVector.Builder(
@@ -86,13 +86,39 @@ fun SettingsScreen(
     onNavigateBack: () -> Unit
 ) {
     val context = LocalContext.current
-    var showUpdateDialog by remember { mutableStateOf(false) }
-    var updateStatus by remember { mutableStateOf("Checking for updates...") }
     val loans by viewModel.allLoans.collectAsState()
     val currentThemeIndex by viewModel.currentThemeIndex.collectAsState()
     val defaultCurrency by viewModel.defaultCurrency.collectAsState()
     val isBiometricEnabled by viewModel.isBiometricEnabled.collectAsState()
     val isNotificationsEnabled by viewModel.isNotificationsEnabled.collectAsState()
+    
+    val availableUpdate by viewModel.availableUpdate.collectAsState()
+    val updateStatus by viewModel.updateCheckStatus.collectAsState()
+
+    LaunchedEffect(updateStatus) {
+        updateStatus?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.clearUpdateFlag()
+        }
+    }
+
+    if (availableUpdate != null) {
+        AlertDialog(
+            onDismissRequest = { viewModel.clearUpdateFlag() },
+            confirmButton = {
+                Button(onClick = {
+                    val intent = Intent(Intent.ACTION_VIEW, availableUpdate!!.downloadUrl.toUri())
+                    context.startActivity(intent)
+                    viewModel.clearUpdateFlag()
+                }) { Text("Download") }
+            },
+            dismissButton = {
+                TextButton(onClick = { viewModel.clearUpdateFlag() }) { Text("Later") }
+            },
+            title = { Text("Update Available!") },
+            text = { Text("A new version (${availableUpdate!!.versionName}) is available.\n\n${availableUpdate!!.updateMessage}") }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -221,12 +247,8 @@ fun SettingsScreen(
                     
                     Button(
                         onClick = {
-                            showUpdateDialog = true
-                            updateStatus = "Checking for updates..."
-                            thread {
-                                Thread.sleep(1000)
-                                updateStatus = "LoanDiary is fully up to date."
-                            }
+                            Toast.makeText(context, "Checking for updates...", Toast.LENGTH_SHORT).show()
+                            viewModel.checkForUpdates()
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
@@ -235,17 +257,6 @@ fun SettingsScreen(
                 }
             }
         }
-    }
-
-    if (showUpdateDialog) {
-        AlertDialog(
-            onDismissRequest = { showUpdateDialog = false },
-            confirmButton = {
-                TextButton(onClick = { showUpdateDialog = false }) { Text("OK") }
-            },
-            title = { Text("Update Status") },
-            text = { Text(updateStatus) }
-        )
     }
 }
 

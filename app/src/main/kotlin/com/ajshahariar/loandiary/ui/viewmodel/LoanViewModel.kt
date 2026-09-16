@@ -5,9 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.ajshahariar.loandiary.data.Loan
 import com.ajshahariar.loandiary.data.LoanDao
 import com.ajshahariar.loandiary.data.SettingsRepository
+import com.ajshahariar.loandiary.data.UpdateManager
+import com.ajshahariar.loandiary.data.AppUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,8 +19,31 @@ import javax.inject.Inject
 @HiltViewModel
 class LoanViewModel @Inject constructor(
     private val loanDao: LoanDao,
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
+    private val updateManager: UpdateManager
 ) : ViewModel() {
+
+    private val _availableUpdate = MutableStateFlow<AppUpdate?>(null)
+    val availableUpdate = _availableUpdate.asStateFlow()
+
+    private val _updateCheckStatus = MutableStateFlow<String?>(null)
+    val updateCheckStatus = _updateCheckStatus.asStateFlow()
+
+    fun checkForUpdates() {
+        viewModelScope.launch {
+            val update = updateManager.checkForUpdate()
+            if (update != null) {
+                _availableUpdate.value = update
+            } else {
+                _updateCheckStatus.value = "LoanDiary is fully up to date."
+            }
+        }
+    }
+
+    fun clearUpdateFlag() {
+        _availableUpdate.value = null
+        _updateCheckStatus.value = null
+    }
 
     val allLoans: StateFlow<List<Loan>> = loanDao.getAllLoans()
         .stateIn(
