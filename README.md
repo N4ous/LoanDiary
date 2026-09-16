@@ -1,13 +1,13 @@
 # LoanDiary 💰
 
 Screenshot's
-<img width="200" height="300" alt="01" src="https://github.com/user-attachments/assets/1cb97b27-a4cf-4b44-af32-95a5951b0f07" />
-<img width="200" height="300" alt="02" src="https://github.com/user-attachments/assets/885ff9d3-4d53-42a3-b053-efb5733a907c" />
-<img width="200" height="300" alt="03" src="https://github.com/user-attachments/assets/9ebfcf2a-c8f6-4493-8d29-4e6b35aabbed" />
-<img width="200" height="300" alt="04" src="https://github.com/user-attachments/assets/8588a216-7b0e-4d67-884a-928cb42e5d43" />
-<img width="200" height="300" alt="05" src="https://github.com/user-attachments/assets/0bcb8cad-5afb-45a6-b452-31f058fc9b96" />
-<img width="200" height="300" alt="06" src="https://github.com/user-attachments/assets/7a168cea-4c56-47b2-8cd8-7acbc3ffaad5" />
-<img width="200" height="300" alt="07" src="https://github.com/user-attachments/assets/ec9bcb1d-c148-4b4e-82bd-850fff31d8d7" />
+<img width="200" height="550" alt="01" src="https://github.com/user-attachments/assets/1cb97b27-a4cf-4b44-af32-95a5951b0f07" />
+<img width="200" height="550" alt="02" src="https://github.com/user-attachments/assets/885ff9d3-4d53-42a3-b053-efb5733a907c" />
+<img width="200" height="550" alt="03" src="https://github.com/user-attachments/assets/9ebfcf2a-c8f6-4493-8d29-4e6b35aabbed" />
+<img width="200" height="550" alt="04" src="https://github.com/user-attachments/assets/8588a216-7b0e-4d67-884a-928cb42e5d43" />
+<img width="200" height="550" alt="05" src="https://github.com/user-attachments/assets/0bcb8cad-5afb-45a6-b452-31f058fc9b96" />
+<img width="200" height="550" alt="06" src="https://github.com/user-attachments/assets/7a168cea-4c56-47b2-8cd8-7acbc3ffaad5" />
+<img width="200" height="550" alt="07" src="https://github.com/user-attachments/assets/ec9bcb1d-c148-4b4e-82bd-850fff31d8d7" />
 
 
 
