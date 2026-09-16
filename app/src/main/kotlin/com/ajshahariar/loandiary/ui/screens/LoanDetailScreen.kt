@@ -2,6 +2,7 @@ package com.ajshahariar.loandiary.ui.screens
 
 import android.content.Intent
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -72,7 +73,7 @@ fun parseRepaymentsList(json: String): List<LocalRepayment> {
             }
             result.add(LocalRepayment(amount, date))
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         // Fallback
     }
     return result
@@ -177,7 +178,7 @@ fun LoanDetailScreen(
                         onClick = {
                             val msg = "Hi ${loan.personName}, just a friendly reminder regarding our pending record of $symbol${String.format(Locale.US, "%.2f", loan.amount)} due on ${dateFormat.format(Date(loan.dueDate))}. Thanks!"
                             val intent = Intent(Intent.ACTION_VIEW).apply {
-                                data = Uri.parse("https://api.whatsapp.com/send?text=" + Uri.encode(msg))
+                                data = ("https://api.whatsapp.com/send?text=" + Uri.encode(msg)).toUri()
                             }
                             context.startActivity(intent)
                         },
@@ -189,7 +190,7 @@ fun LoanDetailScreen(
                     Button(
                         onClick = {
                             val msg = "Hi ${loan.personName}, just a friendly reminder for record of $symbol${String.format(Locale.US, "%.2f", loan.amount)} due on ${dateFormat.format(Date(loan.dueDate))}. Thanks!"
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("sms:?body=" + Uri.encode(msg)))
+                            val intent = Intent(Intent.ACTION_VIEW, ("sms:?body=" + Uri.encode(msg)).toUri())
                             context.startActivity(intent)
                         },
                         modifier = Modifier.weight(1f)

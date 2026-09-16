@@ -1,7 +1,7 @@
 package com.ajshahariar.loandiary.ui.screens
 
 import android.content.Intent
-import android.net.Uri
+import androidx.core.net.toUri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -210,7 +210,7 @@ fun SettingsScreen(
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.clickable {
-                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/N4ous"))
+                                val intent = Intent(Intent.ACTION_VIEW, "https://github.com/N4ous".toUri())
                                 context.startActivity(intent)
                             }
                         )

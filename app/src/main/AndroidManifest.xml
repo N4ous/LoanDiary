@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+
     <application
         android:name=".LoanDiaryApplication"
         android:allowBackup="true"

@@ -153,7 +153,7 @@ fun sumRepayments(json: String): Double {
                 }
             }
         }
-    } catch (e: Exception) {}
+    } catch (_: Exception) {}
     return total
 }
 
@@ -258,7 +258,7 @@ fun HomeScreen(
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     // Analytics Sub-Tabs Row selector
-                    ScrollableTabRow(
+                    SecondaryScrollableTabRow(
                         selectedTabIndex = selectedAnalyticsTab,
                         containerColor = Color.Transparent,
                         divider = {},
