@@ -17,8 +17,8 @@ datastore = "1.2.1"
 junit = "4.13.2"
 androidx-test-ext = "1.3.0"
 androidx-espresso = "3.7.0"
-okhttp = "4.12.0"
-kotlinx-serialization = "1.8.0"
+okhttp = "5.5.0"
+kotlinx-serialization = "1.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
